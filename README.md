@@ -1,8 +1,6 @@
 # AWTRIX Travel Time per Home Assistant
 
-[![GitHub License](https://img.shields.io/github/license/raythekool/ha-awtrix-travel-time?style=flat-square)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/raythekool/ha-awtrix-travel-time?style=flat-square)](https://github.com/raythekool/ha-awtrix-travel-time/stargazers)
-[![GitHub Issues](https://img.shields.io/github/issues/raythekool/ha-awtrix-travel-time?style=flat-square)](https://github.com/raythekool/ha-awtrix-travel-time/issues)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Blueprint-41BDF5?style=flat-square&logo=home-assistant)](https://www.home-assistant.io/)
 [![AWTRIX](https://img.shields.io/badge/AWTRIX-3-orange?style=flat-square)](https://blueforcer.github.io/awtrix3/)
 
