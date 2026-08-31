@@ -104,7 +104,8 @@ condition:
   - condition: template
     value_template: >-
       {{ states(travel_time_sensor) | float(-1) >= 0 and
-         (normal_travel_time | float(0)) > 0 }}
+         (normal_travel_time | float(0)) > 0 and
+         (red_delay_percent | float(0)) > (yellow_delay_percent | float(0)) }}
 
 action:
   - service: mqtt.publish
