@@ -107,7 +107,7 @@ condition:
          (normal_travel_time | float(0)) > 0 }}
 
 action:
-  - action: mqtt.publish
+  - service: mqtt.publish
     data:
       topic: "{{ mqtt_prefix.rstrip('/') }}/custom/{{ app_name }}"
       qos: 0
