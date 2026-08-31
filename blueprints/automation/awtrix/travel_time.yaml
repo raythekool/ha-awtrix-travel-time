@@ -1,0 +1,132 @@
+blueprint:
+  name: "AWTRIX: tempo di viaggio"
+  description: >-
+    Mostra su AWTRIX il tempo di viaggio di un sensore Home Assistant. Il colore
+    indica il ritardo rispetto al tempo normalmente previsto: verde, giallo o rosso.
+  domain: automation
+  source_url: https://github.com/raythekool/ha-awtrix-travel-time/blob/main/blueprints/automation/awtrix/travel_time.yaml
+  input:
+    travel_time_sensor:
+      name: Sensore del tempo di viaggio
+      description: Sensore che espone il tempo di viaggio corrente in minuti.
+      selector:
+        entity:
+          filter:
+            - domain: sensor
+    mqtt_prefix:
+      name: Prefisso MQTT di AWTRIX
+      description: >-
+        Il prefisso MQTT configurato sul display, senza "/custom". Ad esempio:
+        awtrix_123456.
+      selector:
+        text:
+    app_name:
+      name: Nome dell'app AWTRIX
+      description: Nome univoco dell'app personalizzata sul display.
+      default: travel_time
+      selector:
+        text:
+    destination:
+      name: Destinazione
+      description: Testo visualizzato prima del tempo di viaggio.
+      default: Destinazione
+      selector:
+        text:
+    awtrix_icon:
+      name: Icona AWTRIX
+      description: Identificativo dell'icona automobile presente sul display.
+      default: car
+      selector:
+        text:
+    normal_travel_time:
+      name: Tempo di percorrenza normale
+      description: Tempo in minuti previsto senza traffico rilevante.
+      default: 20
+      selector:
+        number:
+          min: 1
+          max: 240
+          step: 1
+          unit_of_measurement: min
+          mode: box
+    yellow_delay_percent:
+      name: Soglia gialla
+      description: Percentuale di ritardo rispetto al tempo normale da cui usare il giallo.
+      default: 25
+      selector:
+        number:
+          min: 1
+          max: 500
+          step: 1
+          unit_of_measurement: "%"
+          mode: box
+    red_delay_percent:
+      name: Soglia rossa
+      description: >-
+        Percentuale di ritardo rispetto al tempo normale da cui usare il rosso.
+        Deve essere maggiore della soglia gialla.
+      default: 50
+      selector:
+        number:
+          min: 1
+          max: 500
+          step: 1
+          unit_of_measurement: "%"
+          mode: box
+    display_duration:
+      name: Durata di visualizzazione
+      description: Secondi per cui l'app resta visibile nel ciclo AWTRIX.
+      default: 8
+      selector:
+        number:
+          min: 1
+          max: 60
+          step: 1
+          unit_of_measurement: s
+          mode: box
+
+variables:
+  travel_time_sensor: !input travel_time_sensor
+  mqtt_prefix: !input mqtt_prefix
+  app_name: !input app_name
+  destination: !input destination
+  awtrix_icon: !input awtrix_icon
+  normal_travel_time: !input normal_travel_time
+  yellow_delay_percent: !input yellow_delay_percent
+  red_delay_percent: !input red_delay_percent
+  display_duration: !input display_duration
+
+trigger:
+  - platform: state
+    entity_id: !input travel_time_sensor
+
+condition:
+  - condition: template
+    value_template: "{{ states(travel_time_sensor) | float(-1) >= 0 }}"
+
+action:
+  - service: mqtt.publish
+    data:
+      topic: "{{ mqtt_prefix }}/custom/{{ app_name }}"
+      qos: 0
+      retain: false
+      payload: >-
+        {% set minutes = states(travel_time_sensor) | float %}
+        {% set normal_minutes = normal_travel_time | float %}
+        {% set delay = ((minutes - normal_minutes) / normal_minutes * 100) %}
+        {% if delay >= red_delay_percent | float %}
+          {% set color = [244, 67, 54] %}
+        {% elif delay >= yellow_delay_percent | float %}
+          {% set color = [255, 193, 7] %}
+        {% else %}
+          {% set color = [0, 200, 83] %}
+        {% endif %}
+        {{ {
+          "text": destination ~ ": " ~ (minutes | round(0) | int) ~ " min",
+          "icon": awtrix_icon,
+          "color": color,
+          "duration": display_duration | int,
+          "noScroll": true
+        } | tojson }}
+
+mode: restart
