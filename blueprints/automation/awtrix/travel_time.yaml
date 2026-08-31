@@ -109,7 +109,7 @@ condition:
 action:
   - action: mqtt.publish
     data:
-      topic: "{{ mqtt_prefix }}/custom/{{ app_name }}"
+      topic: "{{ mqtt_prefix.rstrip('/') }}/custom/{{ app_name }}"
       qos: 0
       retain: false
       payload: >-
