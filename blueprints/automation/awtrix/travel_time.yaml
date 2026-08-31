@@ -102,10 +102,12 @@ trigger:
 
 condition:
   - condition: template
-    value_template: "{{ states(travel_time_sensor) | float(-1) >= 0 }}"
+    value_template: >-
+      {{ states(travel_time_sensor) | float(-1) >= 0 and
+         (normal_travel_time | float(0)) > 0 }}
 
 action:
-  - service: mqtt.publish
+  - action: mqtt.publish
     data:
       topic: "{{ mqtt_prefix }}/custom/{{ app_name }}"
       qos: 0
