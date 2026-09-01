@@ -57,7 +57,7 @@ blueprint:
     yellow_delay_percent:
       name: Soglia gialla
       description: Percentuale di ritardo rispetto al tempo normale da cui usare il giallo.
-      default: 25
+      default: 20
       selector:
         number:
           min: 1
@@ -70,7 +70,7 @@ blueprint:
       description: >-
         Percentuale di ritardo rispetto al tempo normale da cui usare il rosso.
         Deve essere maggiore della soglia gialla.
-      default: 50
+      default: 25
       selector:
         number:
           min: 1
@@ -89,6 +89,42 @@ blueprint:
           step: 1
           unit_of_measurement: s
           mode: box
+    show_destination_text:
+      name: Mostra il testo della destinazione
+      description: >-
+        Se disattivato, il testo mostra solo i minuti (es. "12 min."), utile
+        quando l'icona identifica già la destinazione (per esempio l'asilo).
+      default: true
+      selector:
+        boolean:
+    restrict_to_time_windows:
+      name: Limita a due fasce orarie
+      description: >-
+        Se attivo, l'app viene mostrata solo nelle due fasce orarie sottostanti
+        e rimossa automaticamente dal display al termine di ciascuna fascia.
+      default: false
+      selector:
+        boolean:
+    time_window_1_start:
+      name: Fascia oraria 1 - inizio
+      default: "07:30:00"
+      selector:
+        time:
+    time_window_1_end:
+      name: Fascia oraria 1 - fine
+      default: "09:00:00"
+      selector:
+        time:
+    time_window_2_start:
+      name: Fascia oraria 2 - inizio
+      default: "15:30:00"
+      selector:
+        time:
+    time_window_2_end:
+      name: Fascia oraria 2 - fine
+      default: "17:00:00"
+      selector:
+        time:
 
 variables:
   travel_time_sensor: !input travel_time_sensor
@@ -100,6 +136,16 @@ variables:
   yellow_delay_percent: !input yellow_delay_percent
   red_delay_percent: !input red_delay_percent
   display_duration: !input display_duration
+  show_destination_text: !input show_destination_text
+  restrict_to_time_windows: !input restrict_to_time_windows
+  time_window_1_start: !input time_window_1_start
+  time_window_1_end: !input time_window_1_end
+  time_window_2_start: !input time_window_2_start
+  time_window_2_end: !input time_window_2_end
+  in_time_window: >-
+    {{ not restrict_to_time_windows or
+       (now() >= today_at(time_window_1_start) and now() <= today_at(time_window_1_end)) or
+       (now() >= today_at(time_window_2_start) and now() <= today_at(time_window_2_end)) }}
   awtrix_topics: |
     {%- macro get_device_topic(device_id) %}
       {{ states((device_entities(device_id) | select('search', 'device_topic') | list)[0]) }}
@@ -121,8 +167,13 @@ variables:
     {%- else %}
       {%- set color = [0, 200, 83] %}
     {%- endif %}
+    {%- if show_destination_text %}
+      {%- set text = destination ~ ": " ~ (minutes | round(0) | int) ~ " min." %}
+    {%- else %}
+      {%- set text = (minutes | round(0) | int) ~ " min." %}
+    {%- endif %}
     {{ {
-      "text": destination ~ ": " ~ (minutes | round(0) | int) ~ " min",
+      "text": text,
       "icon": awtrix_icon,
       "color": color,
       "duration": display_duration | int,
@@ -132,23 +183,42 @@ variables:
 trigger:
   - platform: state
     entity_id: !input travel_time_sensor
+  - platform: time
+    at: !input time_window_1_end
+  - platform: time
+    at: !input time_window_2_end
 
 condition:
   - condition: template
     value_template: >-
-      {{ states(travel_time_sensor) | float(-1) >= 0 and
-         (normal_travel_time | float(0)) > 0 and
-         (red_delay_percent | float(0)) > (yellow_delay_percent | float(0)) }}
+      {{ (normal_travel_time | float(0)) > 0 and
+         (red_delay_percent | float(0)) > (yellow_delay_percent | float(0)) and
+         ((trigger.platform == 'time' and restrict_to_time_windows) or
+          (trigger.platform != 'time' and states(travel_time_sensor) | float(-1) >= 0)) and
+         in_time_window }}
 
 action:
-  - repeat:
-      for_each: "{{ awtrix_topics }}"
-      sequence:
-        - service: mqtt.publish
-          data:
-            topic: "{{ repeat.item }}"
-            qos: 0
-            retain: false
-            payload: "{{ travel_time_payload }}"
+  - choose:
+      - conditions: "{{ trigger.platform == 'time' }}"
+        sequence:
+          - repeat:
+              for_each: "{{ awtrix_topics }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    topic: "{{ repeat.item }}"
+                    qos: 0
+                    retain: false
+                    payload: ""
+    default:
+      - repeat:
+          for_each: "{{ awtrix_topics }}"
+          sequence:
+            - service: mqtt.publish
+              data:
+                topic: "{{ repeat.item }}"
+                qos: 0
+                retain: false
+                payload: "{{ travel_time_payload }}"
 
 mode: restart

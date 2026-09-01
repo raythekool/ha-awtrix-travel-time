@@ -51,9 +51,30 @@ il tempo di percorrenza normale, senza traffico rilevante. Le due soglie sono
 percentuali di ritardo rispetto a quel valore; mantenere la soglia rossa maggiore
 della gialla.
 
+### Testo senza destinazione
+
+Disattivando **Mostra il testo della destinazione** il testo mostra solo i
+minuti (es. `12 min.`), utile quando l'icona identifica già il contesto (per
+esempio l'asilo).
+
+### Fasce orarie
+
+Attivando **Limita a due fasce orarie** l'app viene mostrata solo negli
+intervalli configurati (per esempio andata e ritorno da un percorso abituale) e
+viene rimossa automaticamente dal display al termine di ciascuna fascia. Le
+fasce si riferiscono all'ora locale del server Home Assistant e non gestiscono
+intervalli che attraversano la mezzanotte.
+
 ## Icona
 
 La blueprint usa per impostazione predefinita l’icona `car`, inclusa nelle icone
 AWTRIX/LaMetric: non sono necessari file aggiuntivi o script di upload. Per
 usare un’icona diversa, inserire il relativo identificativo nel campo **Icona
 AWTRIX** della blueprint.
+
+Per un percorso verso l'asilo, la [galleria icone LaMetric](https://developer.lametric.com/icons)
+non include un'icona curata "kindergarten/preschool"; tra le icone caricate
+dalla community, la più pertinente trovata è **Classroom** (ID `37482`). Le
+icone della community non sono verificate da LaMetric: si consiglia di
+visualizzarla nella galleria prima di usarla e, in alternativa, di generarne
+una personalizzata con **Create Icon**.
