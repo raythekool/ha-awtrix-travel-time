@@ -93,9 +93,14 @@ Il campo **Icona AWTRIX** accetta:
 - il nome, senza estensione, di un file gia caricato nella cartella `/ICONS` del
   display.
 
-Il valore predefinito `4532` e l'icona LaMetric "car". Per un percorso verso
-l'asilo, la galleria include l'icona community **Classroom** (ID `37482`):
-verificarne l'aspetto nella galleria prima di usarla.
+Il valore predefinito `26337` e l'icona **Lightning Bolt** usata anche dalla
+blueprint AWTRIX Power Consumption Display. Per un percorso verso l'asilo, la
+galleria include l'icona community **Classroom** (ID `37482`): verificarne
+l'aspetto nella galleria prima di usarla.
+
+Le automazioni create prima dell'aggiornamento conservano il precedente valore
+`car`: aprire l'automazione, impostare **Icona AWTRIX** su `26337` (o un altro ID
+numerico) e salvare.
 
 ## 🐛 Risoluzione problemi
 
@@ -111,7 +116,7 @@ verificarne l'aspetto nella galleria prima di usarla.
 
 ### L'icona non compare
 
-Usare un ID numerico LaMetric, come `4532`, oppure il nome di un file realmente
+Usare un ID numerico LaMetric, come `26337`, oppure il nome di un file realmente
 presente in `/ICONS`. Una parola generica come `car` non e un ID valido e non
 viene risolta dal display.
 

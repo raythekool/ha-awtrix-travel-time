@@ -52,10 +52,11 @@ blueprint:
     awtrix_icon:
       name: Icona AWTRIX
       description: >-
-        ID numerico dell'icona LaMetric (scaricata automaticamente dal display,
-        richiede connessione Internet sull'AWTRIX) oppure nome del file già
-        caricato manualmente nella cartella /ICONS del display.
-      default: "4532"
+        Inserire un ID numerico LaMetric, per esempio 26337, oppure il nome di
+        un file già caricato manualmente nella cartella /ICONS del display.
+        Il valore predefinito è l'icona Lightning Bolt usata anche dalla
+        blueprint AWTRIX Power Consumption Display.
+      default: "26337"
       selector:
         text:
     normal_travel_time:
