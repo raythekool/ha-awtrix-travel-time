@@ -62,14 +62,21 @@ intervalli che attraversano la mezzanotte.
 
 ## Icona
 
-La blueprint usa per impostazione predefinita l’icona `car`, inclusa nelle icone
-AWTRIX/LaMetric: non sono necessari file aggiuntivi o script di upload. Per
-usare un’icona diversa, inserire il relativo identificativo nel campo **Icona
-AWTRIX** della blueprint.
+Il campo **Icona AWTRIX** accetta due formati:
 
-Per un percorso verso l'asilo, la [galleria icone LaMetric](https://developer.lametric.com/icons)
-non include un'icona curata "kindergarten/preschool"; tra le icone caricate
-dalla community, la più pertinente trovata è **Classroom** (ID `37482`). Le
-icone della community non sono verificate da LaMetric: si consiglia di
-visualizzarla nella galleria prima di usarla e, in alternativa, di generarne
-una personalizzata con **Create Icon**.
+- l'**ID numerico** di un'icona della [galleria LaMetric](https://developer.lametric.com/icons)
+  (per esempio `4532`): il display la scarica automaticamente al primo utilizzo,
+  quindi richiede che l'AWTRIX abbia accesso a Internet;
+- il **nome file** (senza estensione) di un'icona caricata manualmente nella
+  cartella `/ICONS` del display.
+
+Una parola generica come `car` non corrisponde a nessuna delle due forme e non
+verrà mostrata: per questo il valore predefinito della blueprint è l'ID
+numerico `4532` ("car"), un'icona ufficiale della galleria LaMetric.
+
+Per un percorso verso l'asilo, la galleria non include un'icona curata
+"kindergarten/preschool"; tra le icone caricate dalla community, la più
+pertinente trovata è **Classroom** (ID `37482`). Le icone della community non
+sono verificate da LaMetric: si consiglia di visualizzarla nella galleria prima
+di usarla e, in alternativa, di generarne una personalizzata con **Create
+Icon**.

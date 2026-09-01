@@ -33,8 +33,11 @@ blueprint:
         text:
     awtrix_icon:
       name: Icona AWTRIX
-      description: Identificativo dell'icona automobile presente sul display.
-      default: car
+      description: >-
+        ID numerico dell'icona LaMetric (scaricata automaticamente dal display,
+        richiede connessione Internet sull'AWTRIX) oppure nome del file già
+        caricato manualmente nella cartella /ICONS del display.
+      default: "4532"
       selector:
         text:
     normal_travel_time:
