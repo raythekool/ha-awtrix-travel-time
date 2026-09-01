@@ -54,9 +54,8 @@ blueprint:
       description: >-
         Inserire un ID numerico LaMetric, per esempio 26337, oppure il nome di
         un file già caricato manualmente nella cartella /ICONS del display.
-        Il valore predefinito è l'icona Lightning Bolt usata anche dalla
-        blueprint AWTRIX Power Consumption Display.
-      default: "26337"
+        Il valore predefinito richiede l'upload di upload_icons.py.
+      default: travel-time
       selector:
         text:
     normal_travel_time:

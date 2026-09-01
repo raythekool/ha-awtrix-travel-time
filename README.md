@@ -93,14 +93,19 @@ Il campo **Icona AWTRIX** accetta:
 - il nome, senza estensione, di un file gia caricato nella cartella `/ICONS` del
   display.
 
-Il valore predefinito `26337` e l'icona **Lightning Bolt** usata anche dalla
-blueprint AWTRIX Power Consumption Display. Per un percorso verso l'asilo, la
-galleria include l'icona community **Classroom** (ID `37482`): verificarne
-l'aspetto nella galleria prima di usarla.
+Il valore predefinito `travel-time` e un file locale. Caricarlo una volta sul
+display con uno degli script inclusi:
 
-Le automazioni create prima dell'aggiornamento conservano il precedente valore
-`car`: aprire l'automazione, impostare **Icona AWTRIX** su `26337` (o un altro ID
-numerico) e salvare.
+```bash
+./upload_icons.sh 192.168.1.100
+python3 upload_icons.py 192.168.1.100
+```
+
+In Windows, eseguire `upload_icons.bat 192.168.1.100`. Gli script scaricano
+l'icona LaMetric `26337` e la caricano come `/ICONS/travel-time.gif` (o PNG se
+la GIF non e disponibile). Per un percorso verso l'asilo, la galleria include
+l'icona community **Classroom** (ID `37482`): verificarne l'aspetto nella
+galleria prima di usarla.
 
 ## 🐛 Risoluzione problemi
 
@@ -116,9 +121,9 @@ numerico) e salvare.
 
 ### L'icona non compare
 
-Usare un ID numerico LaMetric, come `26337`, oppure il nome di un file realmente
-presente in `/ICONS`. Una parola generica come `car` non e un ID valido e non
-viene risolta dal display.
+Eseguire `upload_icons.sh <IP_AWTRIX>` e impostare **Icona AWTRIX** su
+`travel-time`. In alternativa usare un ID numerico LaMetric, come `26337`,
+oppure il nome di un file realmente presente in `/ICONS`.
 
 ### Colore non previsto
 
