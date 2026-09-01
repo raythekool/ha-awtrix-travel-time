@@ -204,14 +204,24 @@ condition:
   - condition: template
     value_template: >-
       {{ (normal_travel_time | float(0)) > 0 and
-         (red_delay_percent | float(0)) > (yellow_delay_percent | float(0)) and
-         ((trigger.platform == 'time' and restrict_to_time_windows) or
-          (trigger.platform != 'time' and states(travel_time_sensor) | float(-1) >= 0)) and
-         in_time_window }}
+         (red_delay_percent | float(0)) > (yellow_delay_percent | float(0)) }}
 
 action:
   - choose:
-      - conditions: "{{ trigger.platform == 'time' }}"
+      - conditions: >-
+          {{ (not restrict_to_time_windows or in_time_window) and
+             states(travel_time_sensor) | float(-1) >= 0 }}
+        sequence:
+          - repeat:
+              for_each: "{{ awtrix_topics }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    topic: "{{ repeat.item }}"
+                    qos: 0
+                    retain: false
+                    payload: "{{ travel_time_payload }}"
+      - conditions: "{{ restrict_to_time_windows }}"
         sequence:
           - repeat:
               for_each: "{{ awtrix_topics }}"
@@ -222,15 +232,5 @@ action:
                     qos: 0
                     retain: false
                     payload: ""
-    default:
-      - repeat:
-          for_each: "{{ awtrix_topics }}"
-          sequence:
-            - service: mqtt.publish
-              data:
-                topic: "{{ repeat.item }}"
-                qos: 0
-                retain: false
-                payload: "{{ travel_time_payload }}"
 
 mode: restart
