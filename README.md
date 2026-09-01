@@ -45,26 +45,26 @@ Selezionare il pulsante e quindi **Importa blueprint** in Home Assistant.
 3. Selezionare **AWTRIX Tempo di Viaggio**.
 4. Configurare i parametri principali:
 
-| Parametro | Esempio | Descrizione |
-| --- | --- | --- |
-| Dispositivo AWTRIX | Ulanzi TC001 | Uno o piu display AWTRIX 3 rilevati da MQTT Discovery. |
-| Sensore del tempo di viaggio | `sensor.tempo_per_asilo` | Sensore con valore in minuti. |
-| Nome dell'app AWTRIX | `travel_time_asilo` | Identificativo univoco dell'app personalizzata. |
-| Icona AWTRIX | `4532` | ID LaMetric o nome di file caricato in `/ICONS`. |
-| Tempo di percorrenza normale | `20` min | Tempo senza traffico rilevante. |
-| Soglia gialla | `20` % | Ritardo da cui usare il giallo. |
-| Soglia rossa | `25` % | Ritardo da cui usare il rosso. |
+| Parametro                    | Esempio                  | Descrizione                                            |
+| ---------------------------- | ------------------------ | ------------------------------------------------------ |
+| Dispositivo AWTRIX           | Ulanzi TC001             | Uno o piu display AWTRIX 3 rilevati da MQTT Discovery. |
+| Sensore del tempo di viaggio | `sensor.tempo_per_asilo` | Sensore con valore in minuti.                          |
+| Nome dell'app AWTRIX         | `travel_time_asilo`      | Identificativo univoco dell'app personalizzata.        |
+| Icona AWTRIX                 | `4532`                   | ID LaMetric o nome di file caricato in `/ICONS`.       |
+| Tempo di percorrenza normale | `20` min                 | Tempo senza traffico rilevante.                        |
+| Soglia gialla                | `20` %                   | Ritardo da cui usare il giallo.                        |
+| Soglia rossa                 | `25` %                   | Ritardo da cui usare il rosso.                         |
 
 ## Formato display
 
 L'app mostra l'icona scelta e il tempo, per esempio `12 min.`. Il colore viene
 calcolato rispetto al tempo normale:
 
-| Ritardo | Colore |
-| --- | --- |
-| Inferiore alla soglia gialla | Verde |
+| Ritardo                               | Colore |
+| ------------------------------------- | ------ |
+| Inferiore alla soglia gialla          | Verde  |
 | Dalla soglia gialla alla soglia rossa | Giallo |
-| Uguale o superiore alla soglia rossa | Rosso |
+| Uguale o superiore alla soglia rossa  | Rosso  |
 
 ## Opzioni di configurazione
 
