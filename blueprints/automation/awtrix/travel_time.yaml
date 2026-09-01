@@ -1,5 +1,5 @@
 blueprint:
-  name: "AWTRIX: tempo di viaggio"
+  name: "AWTRIX Tempo di Viaggio"
   description: >-
     Mostra su AWTRIX il tempo di viaggio di un sensore Home Assistant. Il colore
     indica il ritardo rispetto al tempo normalmente previsto: verde, giallo o rosso.
