@@ -10,7 +10,7 @@ import urllib.request
 import uuid
 
 ICON_NAME = "travel-time"
-ICON_ID = 26337
+ICON_ID = 42529
 TIMEOUT_SECONDS = 10
 
 

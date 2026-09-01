@@ -102,7 +102,7 @@ python3 upload_icons.py 192.168.1.100
 ```
 
 In Windows, eseguire `upload_icons.bat 192.168.1.100`. Gli script scaricano
-l'icona LaMetric `26337` e la caricano come `/ICONS/travel-time.gif` (o PNG se
+l'icona LaMetric `42529` e la caricano come `/ICONS/travel-time.gif` (o PNG se
 la GIF non e disponibile). Per un percorso verso l'asilo, la galleria include
 l'icona community **Classroom** (ID `37482`): verificarne l'aspetto nella
 galleria prima di usarla.
@@ -122,7 +122,7 @@ galleria prima di usarla.
 ### L'icona non compare
 
 Eseguire `upload_icons.sh <IP_AWTRIX>` e impostare **Icona AWTRIX** su
-`travel-time`. In alternativa usare un ID numerico LaMetric, come `26337`,
+`travel-time`. In alternativa usare un ID numerico LaMetric, come `42529`,
 oppure il nome di un file realmente presente in `/ICONS`.
 
 ### Colore non previsto

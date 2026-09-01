@@ -52,7 +52,7 @@ blueprint:
     awtrix_icon:
       name: Icona AWTRIX
       description: >-
-        Inserire un ID numerico LaMetric, per esempio 26337, oppure il nome di
+        Inserire un ID numerico LaMetric, per esempio 42529, oppure il nome di
         un file già caricato manualmente nella cartella /ICONS del display.
         Il valore predefinito richiede l'upload di upload_icons.py.
       default: travel-time
