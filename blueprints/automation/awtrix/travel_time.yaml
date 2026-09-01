@@ -1,8 +1,24 @@
 blueprint:
   name: "AWTRIX Tempo di Viaggio 🚗"
-  description: >-
-    Mostra su AWTRIX il tempo di viaggio di un sensore Home Assistant. Il colore
-    indica il ritardo rispetto al tempo normalmente previsto: verde, giallo o rosso.
+  description: |
+    Mostra su AWTRIX il tempo di viaggio di un sensore Home Assistant.
+
+    ## ⚠️ REQUISITI
+    - Home Assistant 2024.6.0 o successivo
+    - AWTRIX 3 configurato tramite MQTT con Home Assistant Discovery attiva
+    - Sensore che espone il tempo di viaggio corrente in minuti
+
+    ## ✨ FUNZIONALITA
+    - Colori dinamici: verde, giallo e rosso in base al ritardo
+    - Aggiornamento alla variazione del sensore e refresh ogni minuto
+    - Supporto per uno o piu dispositivi AWTRIX
+    - Due fasce orarie giornaliere opzionali
+
+    ## 📺 FORMATO DISPLAY
+    Icona configurata + tempo in minuti, per esempio: `12 min.`
+
+    ## 🔗 MAGGIORI INFORMAZIONI
+    https://github.com/raythekool/ha-awtrix-travel-time
   domain: automation
   homeassistant:
     min_version: "2024.6.0"

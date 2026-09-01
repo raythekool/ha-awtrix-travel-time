@@ -1,4 +1,4 @@
-# AWTRIX Travel Time Display
+# AWTRIX Travel Time Display 🚗
 
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Blueprint-41BDF5?style=flat-square&logo=home-assistant)](https://www.home-assistant.io/)
@@ -7,7 +7,7 @@
 Blueprint Home Assistant per mostrare su AWTRIX 3 il tempo di viaggio di un
 sensore, con colore dinamico basato sul ritardo rispetto al tempo abituale.
 
-## Funzionalita
+## ✨ Funzionalita
 
 - Aggiornamento immediato quando cambia il sensore e refresh automatico ogni minuto.
 - Colore verde, giallo o rosso in base alle soglie di ritardo configurate.
@@ -16,14 +16,14 @@ sensore, con colore dinamico basato sul ritardo rispetto al tempo abituale.
 - Due fasce orarie opzionali, adatte per andata e ritorno.
 - Durata e scorrimento del testo configurabili.
 
-## Requisiti
+## ⚠️ Requisiti
 
 1. Home Assistant 2024.6.0 o successivo.
 2. Uno o piu dispositivi AWTRIX 3 configurati tramite MQTT.
 3. MQTT Discovery di Home Assistant attiva nelle impostazioni MQTT di AWTRIX.
 4. Un sensore che esponga il tempo di viaggio corrente in minuti.
 
-## Installazione
+## 📦 Installazione
 
 ### Importazione rapida
 
@@ -38,7 +38,7 @@ Selezionare il pulsante e quindi **Importa blueprint** in Home Assistant.
    Assistant.
 3. Ricaricare le automazioni o riavviare Home Assistant.
 
-## Avvio rapido
+## 🚀 Avvio rapido
 
 1. Aprire **Impostazioni**, quindi **Automazioni e scene**.
 2. Selezionare **Crea automazione**, poi **Usa un blueprint**.
@@ -55,7 +55,7 @@ Selezionare il pulsante e quindi **Importa blueprint** in Home Assistant.
 | Soglia gialla                | `20` %                   | Ritardo da cui usare il giallo.                        |
 | Soglia rossa                 | `25` %                   | Ritardo da cui usare il rosso.                         |
 
-## Formato display
+## 📺 Formato display
 
 L'app mostra l'icona scelta e il tempo, per esempio `12 min.`. Il colore viene
 calcolato rispetto al tempo normale:
@@ -66,7 +66,7 @@ calcolato rispetto al tempo normale:
 | Dalla soglia gialla alla soglia rossa | Giallo |
 | Uguale o superiore alla soglia rossa  | Rosso  |
 
-## Opzioni di configurazione
+## 🔧 Opzioni di configurazione
 
 ### Durata e scorrimento
 
@@ -97,7 +97,7 @@ Il valore predefinito `4532` e l'icona LaMetric "car". Per un percorso verso
 l'asilo, la galleria include l'icona community **Classroom** (ID `37482`):
 verificarne l'aspetto nella galleria prima di usarla.
 
-## Risoluzione problemi
+## 🐛 Risoluzione problemi
 
 ### Il display non si aggiorna
 
@@ -120,99 +120,17 @@ viene risolta dal display.
 Confrontare il valore del sensore con il tempo normale. La soglia rossa deve
 essere maggiore della soglia gialla; entrambe indicano percentuali di ritardo.
 
-## Contributi
+## 🤝 Contributi
 
 Segnalazioni e proposte sono benvenute tramite le
 [issue del repository](https://github.com/raythekool/ha-awtrix-travel-time/issues).
 
-## Licenza
+## 📄 Licenza
 
 Distribuito con licenza MIT. Consultare [LICENSE](LICENSE).
 
-## Crediti
+## 🙏 Crediti
 
 - [AWTRIX 3](https://github.com/Blueforcer/awtrix3)
 - [LaMetric Icon Gallery](https://developer.lametric.com/icons)
 - [Home Assistant](https://www.home-assistant.io/)
-# AWTRIX Travel Time per Home Assistant
-
-[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Blueprint-41BDF5?style=flat-square&logo=home-assistant)](https://www.home-assistant.io/)
-[![AWTRIX](https://img.shields.io/badge/AWTRIX-3-orange?style=flat-square)](https://blueforcer.github.io/awtrix3/)
-
-Blueprint Home Assistant per mostrare il tempo di percorrenza di un sensore su
-un display AWTRIX tramite MQTT.
-
-L'app visualizza l'icona configurata seguita dal tempo in minuti (es. `12 min.`).
-Il colore comunica le condizioni del traffico rispetto al tempo normale
-configurato:
-
-- verde: ritardo inferiore alla soglia gialla;
-- giallo: ritardo uguale o superiore alla soglia gialla;
-- rosso: ritardo uguale o superiore alla soglia rossa.
-
-## Installazione
-
-### Importazione automatica
-
-[![Importa blueprint in Home Assistant](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fraythekool%2Fha-awtrix-travel-time%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Fawtrix%2Ftravel_time.yaml)
-
-1. Selezionare il pulsante per aprire Home Assistant e precompilare
-   l'importazione della blueprint.
-2. Selezionare **Importa blueprint**.
-3. Creare una nuova automazione dal blueprint **AWTRIX: tempo di viaggio**.
-
-### Importazione manuale
-
-1. In Home Assistant aprire **Impostazioni → Automazioni e scene → Blueprint →
-   Importa blueprint**.
-2. Incollare l'URL della blueprint:
-
-   ```text
-   https://github.com/raythekool/ha-awtrix-travel-time/blob/main/blueprints/automation/awtrix/travel_time.yaml
-   ```
-
-3. Selezionare **Anteprima**, quindi **Importa blueprint**.
-
-## Configurazione
-
-Il blueprint richiede l'integrazione MQTT configurata in Home Assistant e AWTRIX
-connesso allo stesso broker, con la **scoperta automatica Home Assistant**
-attiva nelle impostazioni MQTT del display: solo così AWTRIX compare come
-dispositivo selezionabile nel campo **Dispositivo AWTRIX**. Non è necessario
-inserire manualmente alcun prefisso: il topic viene ricavato automaticamente
-dal dispositivo scelto ed è possibile selezionarne più di uno.
-
-Scegliere il sensore che espone il tempo di viaggio corrente in minuti e impostare
-il tempo di percorrenza normale, senza traffico rilevante. Le due soglie sono
-percentuali di ritardo rispetto a quel valore; mantenere la soglia rossa maggiore
-della gialla.
-
-### Fasce orarie
-
-Attivando **Limita a due fasce orarie** l'app viene mostrata solo negli
-intervalli configurati (per esempio andata e ritorno da un percorso abituale) e
-viene rimossa automaticamente dal display al termine di ciascuna fascia. Le
-fasce si riferiscono all'ora locale del server Home Assistant e non gestiscono
-intervalli che attraversano la mezzanotte.
-
-## Icona
-
-Il campo **Icona AWTRIX** accetta due formati:
-
-- l'**ID numerico** di un'icona della [galleria LaMetric](https://developer.lametric.com/icons)
-  (per esempio `4532`): il display la scarica automaticamente al primo utilizzo,
-  quindi richiede che l'AWTRIX abbia accesso a Internet;
-- il **nome file** (senza estensione) di un'icona caricata manualmente nella
-  cartella `/ICONS` del display.
-
-Una parola generica come `car` non corrisponde a nessuna delle due forme e non
-verrà mostrata: per questo il valore predefinito della blueprint è l'ID
-numerico `4532` ("car"), un'icona ufficiale della galleria LaMetric.
-
-Per un percorso verso l'asilo, la galleria non include un'icona curata
-"kindergarten/preschool"; tra le icone caricate dalla community, la più
-pertinente trovata è **Classroom** (ID `37482`). Le icone della community non
-sono verificate da LaMetric: si consiglia di visualizzarla nella galleria prima
-di usarla e, in alternativa, di generarne una personalizzata con **Create
-Icon**.
