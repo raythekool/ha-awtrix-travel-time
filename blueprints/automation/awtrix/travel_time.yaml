@@ -4,6 +4,8 @@ blueprint:
     Mostra su AWTRIX il tempo di viaggio di un sensore Home Assistant. Il colore
     indica il ritardo rispetto al tempo normalmente previsto: verde, giallo o rosso.
   domain: automation
+  homeassistant:
+    min_version: "2024.6.0"
   source_url: https://github.com/raythekool/ha-awtrix-travel-time/blob/main/blueprints/automation/awtrix/travel_time.yaml
   input:
     travel_time_sensor:
@@ -86,6 +88,12 @@ blueprint:
           step: 1
           unit_of_measurement: s
           mode: box
+    no_scroll:
+      name: Disattiva scorrimento
+      description: Mantiene il testo statico invece di farlo scorrere sul display.
+      default: true
+      selector:
+        boolean:
     restrict_to_time_windows:
       name: Limita a due fasce orarie
       description: >-
@@ -124,6 +132,7 @@ variables:
   yellow_delay_percent: !input yellow_delay_percent
   red_delay_percent: !input red_delay_percent
   display_duration: !input display_duration
+  no_scroll: !input no_scroll
   restrict_to_time_windows: !input restrict_to_time_windows
   time_window_1_start: !input time_window_1_start
   time_window_1_end: !input time_window_1_end
@@ -160,12 +169,16 @@ variables:
       "icon": awtrix_icon,
       "color": color,
       "duration": display_duration | int,
-      "noScroll": true
+      "pushIcon": 0,
+      "noScroll": no_scroll,
+      "textCase": 2
     } | tojson }}
 
 trigger:
   - platform: state
     entity_id: !input travel_time_sensor
+  - platform: time_pattern
+    minutes: "/1"
   - platform: time
     at: !input time_window_1_end
   - platform: time
