@@ -106,6 +106,9 @@ su ciascun display AWTRIX.
    # Linux/macOS
    ./upload_icons.sh 192.168.1.100
 
+   # Nome personalizzato, da usare poi nel campo Icona AWTRIX
+   ./upload_icons.sh 192.168.1.100 --name asilo
+
    # In alternativa, su Linux/macOS/Windows
    python3 upload_icons.py 192.168.1.100
    ```
@@ -117,9 +120,11 @@ su ciascun display AWTRIX.
    ```
 
 3. Lo script scarica l'icona LaMetric `42529` e la carica come
-   `/ICONS/travel-time.gif` (o PNG se la GIF non e disponibile).
+   `/ICONS/travel-time.gif` (o PNG se la GIF non e disponibile). Il parametro
+   `--name <nome>` sceglie un nome diverso; puo contenere lettere, numeri,
+   trattini e underscore.
 4. In Home Assistant aprire l'automazione e impostare **Icona AWTRIX** su
-   `travel-time`, quindi salvare.
+   `travel-time`, oppure sul nome scelto con `--name`, quindi salvare.
 
 Per un percorso verso l'asilo, la galleria include l'icona community
 **Classroom** (ID `37482`): verificarne l'aspetto nella galleria prima di

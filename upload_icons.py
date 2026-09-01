@@ -4,6 +4,7 @@
 import argparse
 import ipaddress
 import mimetypes
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -23,6 +24,14 @@ def valid_address(value: str) -> str:
     return value
 
 
+def valid_icon_name(value: str) -> str:
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", value):
+        raise argparse.ArgumentTypeError(
+            "Il nome icona puo contenere solo lettere, numeri, trattini e underscore."
+        )
+    return value
+
+
 def download_icon() -> tuple[bytes, str]:
     for extension in ("gif", "png"):
         url = f"https://developer.lametric.com/content/apps/icon_thumbs/{ICON_ID}.{extension}"
@@ -34,9 +43,9 @@ def download_icon() -> tuple[bytes, str]:
     raise RuntimeError(f"Impossibile scaricare l'icona LaMetric {ICON_ID}.")
 
 
-def upload_icon(address: str, icon: bytes, extension: str) -> None:
+def upload_icon(address: str, icon_name: str, icon: bytes, extension: str) -> None:
     boundary = f"----AWTRIXUpload{uuid.uuid4().hex}"
-    filename = f"/ICONS/{ICON_NAME}.{extension}"
+    filename = f"/ICONS/{icon_name}.{extension}"
     content_type = mimetypes.types_map.get(f".{extension}", "application/octet-stream")
     body = b"\r\n".join(
         (
@@ -65,16 +74,22 @@ def upload_icon(address: str, icon: bytes, extension: str) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("address", nargs="?", type=valid_address, help="IP o hostname AWTRIX")
+    parser.add_argument(
+        "--name",
+        default=ICON_NAME,
+        type=valid_icon_name,
+        help=f"Nome file dell'icona in /ICONS (predefinito: {ICON_NAME})",
+    )
     args = parser.parse_args()
     address = args.address or input("IP o hostname AWTRIX: ").strip()
     try:
         address = valid_address(address)
         icon, extension = download_icon()
-        upload_icon(address, icon, extension)
+        upload_icon(address, args.name, icon, extension)
     except (RuntimeError, urllib.error.URLError, OSError) as error:
         print(f"Errore: {error}", file=sys.stderr)
         return 1
-    print(f"Icona {ICON_NAME}.{extension} caricata su {address}.")
+    print(f"Icona {args.name}.{extension} caricata su {address}.")
     return 0
 
 
