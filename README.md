@@ -40,9 +40,11 @@ condizioni del traffico rispetto al tempo normale configurato:
 ## Configurazione
 
 Il blueprint richiede l'integrazione MQTT configurata in Home Assistant e AWTRIX
-connesso allo stesso broker. Inserire il prefisso MQTT del display (per esempio
-`awtrix_123456`): il blueprint pubblica su
-`<prefisso>/custom/<nome_app>`.
+connesso allo stesso broker, con la **scoperta automatica Home Assistant**
+attiva nelle impostazioni MQTT del display: solo così AWTRIX compare come
+dispositivo selezionabile nel campo **Dispositivo AWTRIX**. Non è necessario
+inserire manualmente alcun prefisso: il topic viene ricavato automaticamente
+dal dispositivo scelto ed è possibile selezionarne più di uno.
 
 Scegliere il sensore che espone il tempo di viaggio corrente in minuti e impostare
 il tempo di percorrenza normale, senza traffico rilevante. Le due soglie sono

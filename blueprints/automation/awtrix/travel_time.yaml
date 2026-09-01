@@ -13,13 +13,18 @@ blueprint:
         entity:
           filter:
             - domain: sensor
-    mqtt_prefix:
-      name: Prefisso MQTT di AWTRIX
+    awtrix:
+      name: Dispositivo AWTRIX
       description: >-
-        Il prefisso MQTT configurato sul display, senza "/custom". Ad esempio:
-        awtrix_123456.
+        Selezionare uno o più dispositivi AWTRIX rilevati da Home Assistant.
+        Richiede che sul display sia attiva la scoperta automatica ("Home
+        Assistant Discovery") nelle impostazioni MQTT.
       selector:
-        text:
+        device:
+          integration: mqtt
+          manufacturer: Blueforcer
+          model: AWTRIX 3
+          multiple: true
     app_name:
       name: Nome dell'app AWTRIX
       description: Nome univoco dell'app personalizzata sul display.
@@ -87,7 +92,7 @@ blueprint:
 
 variables:
   travel_time_sensor: !input travel_time_sensor
-  mqtt_prefix: !input mqtt_prefix
+  device_ids: !input awtrix
   app_name: !input app_name
   destination: !input destination
   awtrix_icon: !input awtrix_icon
@@ -95,6 +100,34 @@ variables:
   yellow_delay_percent: !input yellow_delay_percent
   red_delay_percent: !input red_delay_percent
   display_duration: !input display_duration
+  awtrix_topics: |
+    {%- macro get_device_topic(device_id) %}
+      {{ states((device_entities(device_id) | select('search', 'device_topic') | list)[0]) }}
+    {%- endmacro %}
+    {%- set ns = namespace(topics=[]) %}
+    {%- for device_id in device_ids %}
+      {%- set topic = get_device_topic(device_id) | trim %}
+      {%- set ns.topics = ns.topics + [topic ~ '/custom/' ~ app_name] %}
+    {%- endfor %}
+    {{ ns.topics | reject('match', 'unavailable') | list }}
+  travel_time_payload: |
+    {%- set minutes = states(travel_time_sensor) | float %}
+    {%- set normal_minutes = normal_travel_time | float %}
+    {%- set delay = ((minutes - normal_minutes) / normal_minutes * 100) %}
+    {%- if delay >= red_delay_percent | float %}
+      {%- set color = [244, 67, 54] %}
+    {%- elif delay >= yellow_delay_percent | float %}
+      {%- set color = [255, 193, 7] %}
+    {%- else %}
+      {%- set color = [0, 200, 83] %}
+    {%- endif %}
+    {{ {
+      "text": destination ~ ": " ~ (minutes | round(0) | int) ~ " min",
+      "icon": awtrix_icon,
+      "color": color,
+      "duration": display_duration | int,
+      "noScroll": true
+    } | tojson }}
 
 trigger:
   - platform: state
@@ -108,28 +141,14 @@ condition:
          (red_delay_percent | float(0)) > (yellow_delay_percent | float(0)) }}
 
 action:
-  - service: mqtt.publish
-    data:
-      topic: "{{ mqtt_prefix.rstrip('/') }}/custom/{{ app_name }}"
-      qos: 0
-      retain: false
-      payload: >-
-        {% set minutes = states(travel_time_sensor) | float %}
-        {% set normal_minutes = normal_travel_time | float %}
-        {% set delay = ((minutes - normal_minutes) / normal_minutes * 100) %}
-        {% if delay >= red_delay_percent | float %}
-          {% set color = [244, 67, 54] %}
-        {% elif delay >= yellow_delay_percent | float %}
-          {% set color = [255, 193, 7] %}
-        {% else %}
-          {% set color = [0, 200, 83] %}
-        {% endif %}
-        {{ {
-          "text": destination ~ ": " ~ (minutes | round(0) | int) ~ " min",
-          "icon": awtrix_icon,
-          "color": color,
-          "duration": display_duration | int,
-          "noScroll": true
-        } | tojson }}
+  - repeat:
+      for_each: "{{ awtrix_topics }}"
+      sequence:
+        - service: mqtt.publish
+          data:
+            topic: "{{ repeat.item }}"
+            qos: 0
+            retain: false
+            payload: "{{ travel_time_payload }}"
 
 mode: restart
