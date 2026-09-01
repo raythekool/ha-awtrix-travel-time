@@ -45,15 +45,15 @@ Selezionare il pulsante e quindi **Importa blueprint** in Home Assistant.
 3. Selezionare **AWTRIX Tempo di Viaggio**.
 4. Configurare i parametri principali:
 
-| Parametro                    | Esempio                  | Descrizione                                            |
-| ---------------------------- | ------------------------ | ------------------------------------------------------ |
-| Dispositivo AWTRIX           | Ulanzi TC001             | Uno o piu display AWTRIX 3 rilevati da MQTT Discovery. |
-| Sensore del tempo di viaggio | `sensor.tempo_per_asilo` | Sensore con valore in minuti.                          |
-| Nome dell'app AWTRIX         | `travel_time_asilo`      | Identificativo univoco dell'app personalizzata.        |
-| Icona AWTRIX                 | `4532`                   | ID LaMetric o nome di file caricato in `/ICONS`.       |
-| Tempo di percorrenza normale | `20` min                 | Tempo senza traffico rilevante.                        |
-| Soglia gialla                | `20` %                   | Ritardo da cui usare il giallo.                        |
-| Soglia rossa                 | `25` %                   | Ritardo da cui usare il rosso.                         |
+| Parametro                    | Esempio                  | Descrizione                                              |
+| ---------------------------- | ------------------------ | -------------------------------------------------------- |
+| Dispositivo AWTRIX           | Ulanzi TC001             | Uno o piu display AWTRIX 3 rilevati da MQTT Discovery.   |
+| Sensore del tempo di viaggio | `sensor.tempo_per_asilo` | Sensore con valore in minuti.                            |
+| Nome dell'app AWTRIX         | `travel_time_asilo`      | Identificativo univoco dell'app personalizzata.          |
+| Icona AWTRIX                 | `travel-time`            | Nome del file caricato in `/ICONS` dagli script inclusi. |
+| Tempo di percorrenza normale | `20` min                 | Tempo senza traffico rilevante.                          |
+| Soglia gialla                | `20` %                   | Ritardo da cui usare il giallo.                          |
+| Soglia rossa                 | `25` %                   | Ritardo da cui usare il rosso.                           |
 
 ## 📺 Formato display
 
@@ -93,19 +93,37 @@ Il campo **Icona AWTRIX** accetta:
 - il nome, senza estensione, di un file gia caricato nella cartella `/ICONS` del
   display.
 
-Il valore predefinito `travel-time` e un file locale. Caricarlo una volta sul
-display con uno degli script inclusi:
+Il valore predefinito `travel-time` e un file locale, da caricare una sola volta
+su ciascun display AWTRIX.
 
-```bash
-./upload_icons.sh 192.168.1.100
-python3 upload_icons.py 192.168.1.100
-```
+#### Caricare l'icona
 
-In Windows, eseguire `upload_icons.bat 192.168.1.100`. Gli script scaricano
-l'icona LaMetric `42529` e la caricano come `/ICONS/travel-time.gif` (o PNG se
-la GIF non e disponibile). Per un percorso verso l'asilo, la galleria include
-l'icona community **Classroom** (ID `37482`): verificarne l'aspetto nella
-galleria prima di usarla.
+1. Individuare l'indirizzo IP del display nell'interfaccia web AWTRIX o nel
+   router.
+2. Dal repository, eseguire uno dei seguenti comandi sostituendo l'indirizzo:
+
+   ```bash
+   # Linux/macOS
+   ./upload_icons.sh 192.168.1.100
+
+   # In alternativa, su Linux/macOS/Windows
+   python3 upload_icons.py 192.168.1.100
+   ```
+
+   In Windows, da Prompt dei comandi:
+
+   ```bat
+   upload_icons.bat 192.168.1.100
+   ```
+
+3. Lo script scarica l'icona LaMetric `42529` e la carica come
+   `/ICONS/travel-time.gif` (o PNG se la GIF non e disponibile).
+4. In Home Assistant aprire l'automazione e impostare **Icona AWTRIX** su
+   `travel-time`, quindi salvare.
+
+Per un percorso verso l'asilo, la galleria include l'icona community
+**Classroom** (ID `37482`): verificarne l'aspetto nella galleria prima di
+usarla.
 
 ## 🐛 Risoluzione problemi
 
