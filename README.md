@@ -7,6 +7,8 @@
 Blueprint Home Assistant per mostrare su AWTRIX 3 il tempo di viaggio di un
 sensore, con colore dinamico basato sul ritardo rispetto al tempo abituale.
 
+![Schermata AWTRIX con icona e tempo di viaggio](assets/awtrix-screen.png)
+
 ## ✨ Funzionalita
 
 - Aggiornamento immediato quando cambia il sensore e refresh automatico ogni minuto.
