@@ -7,8 +7,9 @@
 Blueprint Home Assistant per mostrare il tempo di percorrenza di un sensore su
 un display AWTRIX tramite MQTT.
 
-L'app visualizza un'icona automobile e il tempo in minuti. Il colore comunica le
-condizioni del traffico rispetto al tempo normale configurato:
+L'app visualizza l'icona configurata seguita dal tempo in minuti (es. `12 min.`).
+Il colore comunica le condizioni del traffico rispetto al tempo normale
+configurato:
 
 - verde: ritardo inferiore alla soglia gialla;
 - giallo: ritardo uguale o superiore alla soglia gialla;
@@ -50,12 +51,6 @@ Scegliere il sensore che espone il tempo di viaggio corrente in minuti e imposta
 il tempo di percorrenza normale, senza traffico rilevante. Le due soglie sono
 percentuali di ritardo rispetto a quel valore; mantenere la soglia rossa maggiore
 della gialla.
-
-### Testo senza destinazione
-
-Disattivando **Mostra il testo della destinazione** il testo mostra solo i
-minuti (es. `12 min.`), utile quando l'icona identifica già il contesto (per
-esempio l'asilo).
 
 ### Fasce orarie
 
